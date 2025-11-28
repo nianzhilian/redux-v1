@@ -22,6 +22,7 @@ export default function (obj, dispatch) {
 function getAutoDispatch(actionCreater, dispatch) {
   return function (...args) {
     const action = actionCreater(...args);
+    console.log(action)
     dispatch(action);
   };
 }

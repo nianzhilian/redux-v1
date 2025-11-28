@@ -10,7 +10,8 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-transition-group": "^4.4.5",
-    "redux": "^5.0.1"
+    "redux": "^5.0.1",
+    "redux-thunk": "^3.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -33,5 +34,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://192.168.3.213:8091"
+  "proxy": "http://123.56.202.100:7777"
 }

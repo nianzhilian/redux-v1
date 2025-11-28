@@ -32,27 +32,28 @@ export default class App extends Component {
         isVisible: false
     }
     render() {
-        if (this.state.isVisible) {
-            return <div>
-                <h1>标题</h1>
-                <CompA key="compa" />
-                <button onClick={() => {
-                    this.setState({
-                        isVisible: !this.state.isVisible
-                    })
-                }}>显示/隐藏</button>
-            </div>
-        }
-        return (
-            <div>
-                <CompA key="compa" />
-                <button onClick={() => {
-                    this.setState({
-                        isVisible: !this.state.isVisible
-                    })
-                }}>显示/隐藏</button>
-            </div>
-        )
+        // if (this.state.isVisible) {
+        //     return <div>
+        //         <h1>标题</h1>
+        //         <CompA key="compa" />
+        //         <button onClick={() => {
+        //             this.setState({
+        //                 isVisible: !this.state.isVisible
+        //             })
+        //         }}>显示/隐藏</button>
+        //     </div>
+        // }
+        // return (
+        //     <div>
+        //         <CompA key="compa" />
+        //         <button onClick={() => {
+        //             this.setState({
+        //                 isVisible: !this.state.isVisible
+        //             })
+        //         }}>显示/隐藏</button>
+        //     </div>
+        // )
+        return null;
     }
 }
 

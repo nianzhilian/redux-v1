@@ -1,41 +1,30 @@
-import { legacy_createStore as createStore } from "redux";
-import { bindActionCreators } from "../redux";
+import { legacy_createStore as createStore ,compose,applyMiddleware} from "redux";
+// import { thunk } from "redux-thunk";
+import { bindActionCreators,thunk } from "../redux";
+import rootReducers from "./redux/reducers";
+import * as actions from './redux/actions'
+import { generateRandomUUID } from "../utils/util";
 
-function reducer(state,action){
-    if(action.type == 'incress'){
-        return state + 1; 
-    }
-    if(action.type == 'dincress'){
-        return state - 1
-    }
-    if(action.type == 'reset'){
-        return action.payload
-    }
-    return state;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const logger1 = store=>next=>action=>{
+    console.log('%c变化前的数据','color: red; font-weight: bold;',store.getState());
+    next(action);
+    console.log('%c变化后的数据','color: green; font-weight: bold;',store.getState());
+    console.log('')
 }
 
+//中间件聚合 最终 store.dispatch   指的是 applyMiddleware 中 第一个 中间件产生的dispatch生成器
+//每一次dispatch 都会首先执行 thunk中的中间件链条
 
-var obj = {
-    incres:function(){
-        return {
-            type:'incress'
-        }
-    },
-    dincres:function(){
-        return {
-            type:'dincress'
-        }
-    },
-    reset:function(num){
-        return {
-            type:'reset',
-            payload:num
-        }
-    }
-}
+window.store = createStore(rootReducers,composeEnhancers(applyMiddleware(thunk,logger1)));
 
+console.log(window.store.dispatch)
 
-window.store = createStore(reducer,10);
+window.bindTest = bindActionCreators(actions,window.store.dispatch)
 
-window.bindTest = bindActionCreators(obj,window.store.dispatch)
-
+window.bindTest.createUser({
+    id:generateRandomUUID(),
+    name:'王武',
+    age:12
+})
