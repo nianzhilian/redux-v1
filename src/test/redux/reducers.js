@@ -1,5 +1,6 @@
 import { combineReducers } from "../../redux";
 import { generateRandomUUID } from "../../utils/util";
+import search from "./search";
 
 const initState = {
   isLoading: false,
@@ -15,6 +16,7 @@ const initState = {
       age: 11,
     },
   ],
+  total:0
 };
 
 function reducers(state = initState, { type, payload }) {
@@ -41,11 +43,17 @@ function reducers(state = initState, { type, payload }) {
         ...state,
         isLoading: payload,
       };
+    case 'total':
+      return {
+        ...state,
+        total:payload
+      }
     default:
       return state;
   }
 }
 
 export default combineReducers({
-  users: reducers,
+  result: reducers,
+  search
 });

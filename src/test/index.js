@@ -1,7 +1,7 @@
 import { legacy_createStore as createStore ,compose,applyMiddleware} from "redux";
 // import { thunk } from "redux-thunk";
 import { bindActionCreators,thunk } from "../redux";
-import rootReducers from "./redux/reducers";
+import rootReducers from "./redux";
 import * as actions from './redux/actions'
 import { generateRandomUUID } from "../utils/util";
 
@@ -23,8 +23,3 @@ console.log(window.store.dispatch)
 
 window.bindTest = bindActionCreators(actions,window.store.dispatch)
 
-window.bindTest.createUser({
-    id:generateRandomUUID(),
-    name:'王武',
-    age:12
-})
