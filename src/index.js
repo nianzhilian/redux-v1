@@ -4,106 +4,97 @@ import App from "./App"
 //运行一次该模块不做任何的导入
 import './test/index'
 
-// 1、迭代器
-// 2、迭代器生成函数
-// 3、迭代协议
-// 4、生成器函数
-// 5、调用生成器函数 得到一个生成器对象
+//生成器函数
+//执行原理 每次执行到yiled的时候就会卡住  yield后面的表达式作为本次迭代的值
+function* generatorCreater(){
+    console.log('执行函数体');
+    yield 1;
+    return;
+    console.log('执行函数1');
+    yield 2;
+    console.log('执行函数2');
+    yield 3;
+    console.log('执行函数4')
+}
 
-//特点：对象必须有一个next函数且该函数必须要返回一个对象  该对象必须有value属性 和done属性 才能称为迭代器对象
-//斐波拉契数列
-window.iteratorTest = {
-    a:1,
-    b:1,
-    curIndex:1,
-    next(){
-        if(this.curIndex == 1 || this.curIndex == 2){
-            console.log(this)
-            this.curIndex++;
-            return {
-                value:'1',
-                done:false
-            }
-        }
-        const c = this.a + this.b;
-        this.a = this.b;
-        this.b = c;
-        this.curIndex++;
-        return {
-            value:c,
-            done:false
-        }
+//生成器函数有个特点 调用完之后不会执行函数体 其返回的是一个生成器
+window.iteratorFn0 = generatorCreater()
+
+function* generatorCreater1(arr){
+    for (let index = 0; index < arr.length; index++) {
+        const item = arr[index];
+        console.log(`本次迭代${index}`)
+        yield item;
     }
+    console.log('迭代结束')
+}
+window.iteratorFn1 = generatorCreater1([1,2,3,4])
+
+function* g2(){
+    console.log('g2函数体开始运行')
+    let res = yield 'g1';
+    console.log('g1运行');
+    res = yield 'g2';
+    console.log('g2运行');
+    return 123;
 }
 
-//一个一个迭代 直到迭代结束
-var iteratorTes2 = {
-    total:3,
-    i:1,
-    next(){
-        var obj = {
-            value:this.i>this.total ? undefined : Math.random(),
-            done:this.i>this.total
-        }
-        this.i++;
-        return obj;
-    }
+function* generatorCreater2(){
+    console.log('执行函数体');
+    let res = yield 1;
+    console.log('执行函数1',res);
+    res = yield* g2();
+    console.log('g2的返回结果',res);
+    res = yield 2;
+    console.log('执行函数2',res);
+    res = yield 3;
+    console.log('执行函数4',res);
+    return '执行结束'
 }
 
-var nextFn = iteratorTes2.next();
-while (!nextFn.done) {
-    console.log(nextFn);
-    nextFn = iteratorTes2.next();
-}
-
-//迭代器生成函数
-window.iteratorCreater = function(arr){
-    var i = 0;
-    //返回一个迭代器
-    return {
-        next(){
-            return {
-                value:arr[i++],
-                done:i>arr.length
-            }
-        }
-    }
-}
-
-window.iteratorTes3 = window.iteratorCreater([1,3,4,5,6,8,9]);
-
-//可迭代协议(本质还是返回一个迭代器) 只要满足可迭代协议就可以使用for of
-var obj = {
-    [Symbol.iterator](){
-        var i = 1;
-        return {
-            next(){
-                var aa = {
-                        value:i>3?undefined:Math.random(),
-                        done:i>3
-                    }
-               i++
-               return aa;
-            }
-        }
-    }
-}
-
-//模拟for of 
-var ite = obj[Symbol.iterator]();
-//返回一个迭代器
-var res = ite.next();
-while (!res.done) {
-    const val = res.value;
-    console.log(val);
-    res = ite.next();
-}
-
-
-// for (const element of obj) {
-//     console.log(element)
+var iteratorFn2 = generatorCreater2()
+window.iteratorFn2 = iteratorFn2;
+// //第一次给next传参没有任何的意义
+// let res2 = iteratorFn2.next();
+// while (!res2.done) {
+//     const val = res2.value;
+//     //将上一次迭代的值 作为参数进行传递 作为上一次迭代时的yield整个表达式返回值
+//     res2 = iteratorFn2.next(val);
 // }
 
+function asyncFn(){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve('完成')
+        }, 3000);
+    })
+}
 
-
+function* task(){
+    console.log('函数体开始执行22')
+    let data = yield asyncFn();
+    console.log('数据异步执行了',data)
+    data = yield asyncFn();
+    console.log('数据又异步执行了',data);
+    return '整个生成器函数执行完毕'
+}
+//定义一个run函数 传递一个任务 将任务全部执行完毕
+function run(task){
+    //得到一个生成器
+    let iterator = task();
+    next();
+    function next(val){
+        let res = iterator.next(val);
+        console.log(res)
+        if(res.done){
+            return;
+        }
+        if(typeof res.value.then == 'function'){
+            res.value.then((data)=>next(data));
+        }else{
+            next(res.value);
+        }
+    }
+}
+run(task);
 ReactDOM.render(<App/>, document.getElementById('root'));
