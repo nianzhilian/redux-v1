@@ -1,23 +1,67 @@
 //新增  删除 更新
 import axios from "axios";
 import service from "../../utils/request";
+export const actionTypes = {
+  ADD:'add',
+  DELETE:'delete',
+  UPDATE:'update',
+  LOADING:'loading',
+  TOTAL:'total',
+  SEARCH:'search',
+  INCREASE:'increase',
+  DINCREASE:'dincrease',
+  ASYNC_INCREASE:'async_increase',
+  ASYNC_DINCREASE:'async_dincrease',
+  fetchStudents:'fetchStudents'
+} 
+
+export const fetchStudents = ()=>{
+  return {
+    type:actionTypes.fetchStudents
+  }
+}
+
+export const increase = ()=>{
+  return {
+    type:actionTypes.INCREASE
+  }
+}
+
+export const dincrease = ()=>{
+  return {
+    type:actionTypes.DINCREASE
+  }
+}
+
+export const asyncIncrease = ()=>{
+  return {
+    type:actionTypes.ASYNC_INCREASE
+  }
+}
+
+export const asyncDincrease = ()=>{
+  return {
+    type:actionTypes.ASYNC_DINCREASE
+  }
+}
+
 export const createUser = (user) => {
   return {
-    type: "add",
+    type: actionTypes.ADD,
     payload: user,
   };
 };
 
 export const deleteUser = (id) => {
   return {
-    type: "delete",
+    type: actionTypes.DELETE,
     payload: id,
   };
 };
 
 export const updateUser = (id, newdata) => {
   return {
-    type: "update",
+    type: actionTypes.UPDATE,
     payload: {
       ...newdata,
       id,
@@ -27,14 +71,14 @@ export const updateUser = (id, newdata) => {
 
 export const setLoading = (b) => {
   return {
-    type: "loading",
+    type: actionTypes.LOADING,
     payload: b,
   };
 };
 
 export const setTotal = (t)=>{
   return {
-    type:'total',
+    type:actionTypes.TOTAL,
     payload:t
   }
 }
@@ -54,7 +98,7 @@ export const fetchUserList = async (data) => {
 
 export const setSearch = (newcondation)=>{
   return {
-    type:'search',
+    type:actionTypes.SEARCH,
     payload:newcondation
   }
 }
