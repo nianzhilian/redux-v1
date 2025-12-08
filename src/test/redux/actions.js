@@ -12,8 +12,24 @@ export const actionTypes = {
   DINCREASE:'dincrease',
   ASYNC_INCREASE:'async_increase',
   ASYNC_DINCREASE:'async_dincrease',
-  fetchStudents:'fetchStudents'
+  fetchStudents:'fetchStudents',
+  AUTO_INCRESS:'autoIncress',
+  STOP_INCRESS:'stopIncress'
 } 
+
+//自动增加
+export const  autoIncress = ()=>{
+  return {
+    type:actionTypes.AUTO_INCRESS
+  }
+}
+
+//停止增加
+export const stopIncress = ()=>{
+  return {
+    type:actionTypes.STOP_INCRESS
+  }
+}
 
 export const fetchStudents = ()=>{
   return {

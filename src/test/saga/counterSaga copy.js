@@ -1,13 +1,23 @@
-import { take } from "redux-saga/effects";
-import { actionTypes } from "../redux/actions";
+import { takeEvery,delay,put } from "redux-saga/effects";
+import { actionTypes,dincrease,increase } from "../redux/actions";
+
+function* asyncIncrease(){
+    yield delay(2000);
+    yield put(increase());
+}
+
+function* asynDincrease(){
+    yield delay(2000)
+    yield put(dincrease())
+}
 
 export default function*(){
-    //监听action类型 为‘loading’的action是否触发
-    //会阻塞 并且只监听一次
-    // 这种写法一直会监听，这个生成器函数永远不会执行完成
-    //take会进行阻塞
-    while (true) {
-        yield take(actionTypes.LOADING)
-        console.log('这个saga也会执行')
-    }
+    //takeEvery 只起到一个监听的作用 不会阻塞
+    //生成器函数很快就执行完毕了
+    //但是这个任务永远不会完成一直处在监听状态
+    let action1 = yield takeEvery(actionTypes.ASYNC_INCREASE,asyncIncrease);
+    console.log(action1)
+    let action2 = yield takeEvery(actionTypes.ASYNC_DINCREASE,asynDincrease)
+    console.log(action2)
+    console.log('counter生成器函数执行完成')
 }
