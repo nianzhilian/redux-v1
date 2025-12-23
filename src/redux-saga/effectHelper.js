@@ -1,12 +1,15 @@
 const specialEffectName = "@@redux-saga/IO";
 
 export const effectTypes = {
-  AKE: "TAKE",
+  TAKE: "TAKE",
   PUT: "PUT",
   ALL: "ALL",
+  FORK:'FORK',
   DELAY: "DELAY",
   CALL: "CALL",
   SELECT: "SELECT",
+  CANCEL:'CANCEL',
+  TAKEEVERY:'TAKEEVERY'
 };
 
 export function createEffect(type, payload) {

@@ -1,10 +1,12 @@
 
 import runSaga from "./runSaga"
+import { Channel } from "./Channel";
 //中间件创建函数 返回一个中间件
 export default function(){
     return function mid(store){
         const env = {
             store,
+            channel:new Channel()
         }
         //使用bind生成一个新函数
         /**
@@ -15,7 +17,9 @@ export default function(){
         mid.run = runSaga.bind(mid,env);
         return function(next){
             return function(action){
-                return next(action)
+                let res = next(action);
+                env.channel.put(action.type,action)
+                return res;
             }
         }
     }

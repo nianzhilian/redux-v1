@@ -14,7 +14,8 @@ import { actionTypes, dincrease, increase } from "../redux/actions";
 
 function* task(){
     while(true){
-        yield take(actionTypes.AUTO_INCRESS);
+        let res = yield take(actionTypes.AUTO_INCRESS);
+        console.log(res)
         yield race({
             autoIncress:call(function*(){
                 while(true){
@@ -24,6 +25,7 @@ function* task(){
             }),
             cancle:take(actionTypes.STOP_INCRESS)
         })
+        console.log('这里会立马执行吗')
     }
 }
 

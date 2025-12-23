@@ -39,5 +39,6 @@ function* fetchStudents(){
 }
 
 export default function*(){
-    yield takeEvery(actionTypes.fetchStudents,fetchStudents)
+   let res = yield takeEvery(actionTypes.fetchStudents,fetchStudents);
+   console.log(res)
 }
